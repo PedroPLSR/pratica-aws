@@ -1,0 +1,20 @@
+<html>
+<head>
+  <title>Aula Terraform + Ansible</title>
+</head>
+<body>
+  <h1>Servidor Web criado com Terraform e configurado com <span class="ansible-badge">Ansible</span>!</h1>
+  <div class='info'>
+    <p><strong>Hostname:</strong> {{ ansible_hostname }}</p>
+    <p><strong>IP Privado:</strong> {{ ansible_default_ipv4.address }}</p>
+    <p><strong>Distribuicao:</strong> {{ ansible_distribution }} {{ ansible_distribution_version }}</p>
+    <p><strong>Configurado em:</strong> {{ ansible_date_time.iso8601 }}</p>
+  </div>
+</body>
+</html>
+<style>
+    body { font-family: Arial; text-align: center; padding: 50px; }
+    h1 { color: #232f3e; }
+    .info { background: #f0f0f0; padding: 20px; border-radius: 10px; display: inline-block; }
+    .ansible-badge { background: #EE0000; color: white; padding: 5px 10px; border-radius: 5px; }
+</style>

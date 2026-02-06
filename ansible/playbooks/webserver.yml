@@ -1,0 +1,44 @@
+---
+- name: Configurar Servidor Web Apache
+  hosts: webserver
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Atualizar cache do apt
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Atualizar todos os pacotes do sistema (apt upgrade)
+      apt:
+        upgrade: dist
+        update_cache: yes
+      register: apt_upgrade_result
+
+    - name: Mostrar resultado do upgrade
+      debug:
+        msg: "Pacotes atualizados com sucesso!"
+      when: apt_upgrade_result.changed
+
+    - name: Instalar Apache2
+      apt:
+        name: apache2
+        state: present
+
+    - name: Garantir que Apache está rodando
+      systemd:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Criar página index.html customizada
+      template:
+        src: ../templates/index.html.j2
+        dest: /var/www/html/index.html
+        mode: '0644'
+
+    - name: Garantir que Apache está rodando após configuração
+      systemd:
+        name: apache2
+        state: restarted
