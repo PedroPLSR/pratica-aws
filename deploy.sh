@@ -2,6 +2,14 @@
 
 echo "Iniciando deploy..."
 
+# Verificar dependências
+for cmd in terraform ansible-playbook; do
+  if ! command -v $cmd &> /dev/null; then
+    echo "Erro: '$cmd' não está instalado. Instale antes de continuar."
+    exit 1
+  fi
+done
+
 # Terraform
 terraform init
 terraform plan -out=tfplan
